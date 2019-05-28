@@ -1,5 +1,4 @@
-import arcade
-import random
+import arcade, random
 
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 500
@@ -42,16 +41,17 @@ def on_update(delta_time):
         if box_x_position[index] < 0:
             box_x_position[index] = random.randrange(500, 1500)
             box_y_position[index] = random.randrange(0, 500)
-    finish -= 0.75
+    finish -= 1
 
 
 def on_draw():
     global player_y
     arcade.start_render()
+    arcade.draw_rectangle_filled(finish, 250, 50, 500, arcade.color.BLACK)
     arcade.draw_circle_filled(50, player_y, 20, arcade.color.RED)
     for x, y in zip(box_x_position, box_y_position):
         arcade.draw_rectangle_filled(x, y, 50, 50, arcade.color.BRICK_RED)
-    arcade.draw_rectangle_filled(finish, 250, 50, 500, arcade.color.BLACK)
+
 
 
 def on_key_press(key, modifiers):
@@ -72,7 +72,7 @@ def on_key_release(key, modifiers):
 
 def game_over():
     global box_x_position, box_y_position, player_y
-    if player_y == box_y_position and box_x_position == 50:
+    if player_y == y and x == 50:
         arcade.draw_rectangle_filled(250, 150, 500, 300, arcade.color.WHITE)
 
 def win():
@@ -89,6 +89,8 @@ def setup():
     window.on_draw = on_draw
     window.on_key_press = on_key_press
     window.on_key_release = on_key_release
+    window.win = win
+    window.game_over = game_over
 
     arcade.run()
 
