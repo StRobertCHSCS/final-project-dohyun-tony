@@ -8,19 +8,17 @@ COLUMN_COUNT = 1
 
 WIDTH = 1500
 HEIGHT = 100
-
 finish = 1500
 
 box = arcade.ShapeElementList()
-
 box_x_position = []
 box_y_position = []
 
 up_pressed = False
 down_pressed = False
 player_y = 250
-
 grid = []
+
 
 for _ in range(25):
     x = random.randrange(500, finish)
@@ -28,6 +26,7 @@ for _ in range(25):
 
     box_x_position.append(x)
     box_y_position.append(y)
+
 
 def on_update(delta_time):
     global up_pressed, down_pressed, player_y, finish
@@ -41,7 +40,9 @@ def on_update(delta_time):
         if box_x_position[index] < 0:
             box_x_position[index] = random.randrange(500, 1500)
             box_y_position[index] = random.randrange(0, 500)
-    finish -= 1
+    finish -= 10
+    game_over()
+    win()
 
 
 def on_draw():
@@ -51,7 +52,6 @@ def on_draw():
     arcade.draw_circle_filled(50, player_y, 20, arcade.color.RED)
     for x, y in zip(box_x_position, box_y_position):
         arcade.draw_rectangle_filled(x, y, 50, 50, arcade.color.BRICK_RED)
-
 
 
 def on_key_press(key, modifiers):
@@ -72,13 +72,17 @@ def on_key_release(key, modifiers):
 
 def game_over():
     global box_x_position, box_y_position, player_y
-    if player_y == y and x == 50:
+    if player_y == box_y_position and box_x_position == 50:
         arcade.draw_rectangle_filled(250, 150, 500, 300, arcade.color.WHITE)
+        arcade.draw_text("Game Over", 250, 400, arcade.color.BLACK)
+
 
 def win():
     global player_y, finish
-    if finish == 50:
-        arcade.draw_rectangle_filled(250, 150, 500, 300, arcade.color.WHITE)
+    if finish <= 50:
+        arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
+        arcade.draw_text("You Win!", 250, 400, arcade.color.BLACK)
+
 
 def setup():
     arcade.open_window(SCREEN_WIDTH, SCREEN_HEIGHT, "My Arcade Game")
@@ -89,8 +93,6 @@ def setup():
     window.on_draw = on_draw
     window.on_key_press = on_key_press
     window.on_key_release = on_key_release
-    window.win = win
-    window.game_over = game_over
 
     arcade.run()
 
