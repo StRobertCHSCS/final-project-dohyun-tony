@@ -1,4 +1,4 @@
-import arcade, random
+import arcade, random, math
 
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 500
@@ -44,11 +44,11 @@ def on_update(delta_time):
     finish -= 10
     if ((x - 50)**2 + (y - player_y)**2) <= 70:
         status = True
-    if status == True:
+    if status == True and finish > 50:
         arcade.draw_rectangle_filled(250, 150, 500, 300, arcade.color.WHITE)
         arcade.draw_text("Game Over", 250, 400, arcade.color.BLACK)
 
-    elif finish <= 50:
+    elif status == False and finish <= 50:
         arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
         arcade.draw_text("You Win!", 250, 400, arcade.color.BLACK)
 
