@@ -16,6 +16,7 @@ box_y_position = []
 
 up_pressed = False
 down_pressed = False
+status = False
 player_y = 250
 grid = []
 
@@ -29,7 +30,7 @@ for _ in range(25):
 
 
 def on_update(delta_time):
-    global up_pressed, down_pressed, player_y, finish
+    global up_pressed, down_pressed, player_y, finish, status
     if up_pressed and player_y <= SCREEN_HEIGHT - 15:
         player_y += 5
     if down_pressed and player_y >= 15:
@@ -41,8 +42,15 @@ def on_update(delta_time):
             box_x_position[index] = random.randrange(500, 1500)
             box_y_position[index] = random.randrange(0, 500)
     finish -= 10
-    game_over()
-    win()
+    if ((x - 50)**2 + (y - player_y)**2) <= 70:
+        status = True
+    if status == True:
+        arcade.draw_rectangle_filled(250, 150, 500, 300, arcade.color.WHITE)
+        arcade.draw_text("Game Over", 250, 400, arcade.color.BLACK)
+
+    elif finish <= 50:
+        arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
+        arcade.draw_text("You Win!", 250, 400, arcade.color.BLACK)
 
 
 def on_draw():
@@ -68,20 +76,6 @@ def on_key_release(key, modifiers):
         up_pressed = False
     if key == arcade.key.DOWN:
         down_pressed = False
-
-
-def game_over():
-    global box_x_position, box_y_position, player_y
-    if player_y == box_y_position and box_x_position == 50:
-        arcade.draw_rectangle_filled(250, 150, 500, 300, arcade.color.WHITE)
-        arcade.draw_text("Game Over", 250, 400, arcade.color.BLACK)
-
-
-def win():
-    global player_y, finish
-    if finish <= 50:
-        arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
-        arcade.draw_text("You Win!", 250, 400, arcade.color.BLACK)
 
 
 def setup():
