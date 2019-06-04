@@ -39,16 +39,16 @@ def on_update(delta_time):
         box_x_position[index] -= 5
 
         if box_x_position[index] < 0:
-            box_x_position[index] = random.randrange(500, 1500)
-            box_y_position[index] = random.randrange(0, 500)
-    finish -= 10
+            box_x_position[index] = random.randrange(500, 1475)
+            box_y_position[index] = random.randrange(0, 475)
+    finish -= 1
     if ((x - 50)**2 + (y - player_y)**2) <= 70:
         status = True
     if status == True:
         arcade.draw_rectangle_filled(250, 150, 500, 300, arcade.color.WHITE)
         arcade.draw_text("Game Over", 250, 400, arcade.color.BLACK)
 
-    elif finish <= 50:
+    if finish <= 50 and status == False:
         arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
         arcade.draw_text("You Win!", 250, 400, arcade.color.BLACK)
 
