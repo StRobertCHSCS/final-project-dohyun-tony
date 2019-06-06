@@ -50,16 +50,17 @@ def on_update(delta_time):
 def on_draw():
     global player_y, finish, status
     arcade.start_render()
-    arcade.draw_rectangle_filled(finish, 250, 50, 500, arcade.color.BLACK)
-    arcade.draw_circle_filled(50, player_y, 20, arcade.color.RED)
-    for x, y in zip(box_x_position, box_y_position):
-        arcade.draw_rectangle_filled(x, y, 50, 50, arcade.color.BRICK_RED)
     if status == True and finish > 50:
         arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
         arcade.draw_text("Game Over", 120, 250, arcade.color.BLACK, 40)
     elif status == False and finish <= 50:
         arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
         arcade.draw_text("You Win!", 120, 250, arcade.color.BLACK, 40)
+    else:
+        arcade.draw_rectangle_filled(finish, 250, 50, 500, arcade.color.BLACK)
+        arcade.draw_circle_filled(50, player_y, 20, arcade.color.RED)
+        for x, y in zip(box_x_position, box_y_position):
+            arcade.draw_rectangle_filled(x, y, 50, 50, arcade.color.BRICK_RED)
 
 
 def on_key_press(key, modifiers):
