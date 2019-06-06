@@ -37,29 +37,29 @@ def on_update(delta_time):
         player_y -= 5
     for index in range(len(box_x_position)):
         box_x_position[index] -= 5
-
-        if box_x_position[index] < 0:
+        if ((box_x_position[index] - 50) ** 2 + (box_y_position[index] - player_y) ** 2) <= 1000:
+            status = True
+        if box_x_position[index] < -25:
             box_x_position[index] = random.randrange(500, 1475)
             box_y_position[index] = random.randrange(0, 475)
-    finish -= 1
-    if ((x - 50)**2 + (y - player_y)**2) <= 70:
-        status = True
-    if status == True:
-        arcade.draw_rectangle_filled(250, 150, 500, 300, arcade.color.WHITE)
-        arcade.draw_text("Game Over", 250, 400, arcade.color.BLACK)
+    finish -= 10
 
-    if finish <= 50 and status == False:
-        arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
-        arcade.draw_text("You Win!", 250, 400, arcade.color.BLACK)
+
 
 
 def on_draw():
-    global player_y
+    global player_y, finish, status
     arcade.start_render()
     arcade.draw_rectangle_filled(finish, 250, 50, 500, arcade.color.BLACK)
     arcade.draw_circle_filled(50, player_y, 20, arcade.color.RED)
     for x, y in zip(box_x_position, box_y_position):
         arcade.draw_rectangle_filled(x, y, 50, 50, arcade.color.BRICK_RED)
+    if status == True and finish > 50:
+        arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
+        arcade.draw_text("Game Over", 120, 250, arcade.color.BLACK, 40)
+    elif status == False and finish <= 50:
+        arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
+        arcade.draw_text("You Win!", 120, 250, arcade.color.BLACK, 40)
 
 
 def on_key_press(key, modifiers):
@@ -82,6 +82,7 @@ def setup():
     arcade.open_window(SCREEN_WIDTH, SCREEN_HEIGHT, "My Arcade Game")
     arcade.set_background_color(arcade.color.WHITE)
     arcade.schedule(on_update, 1/60)
+
 
     window = arcade.get_window()
     window.on_draw = on_draw
