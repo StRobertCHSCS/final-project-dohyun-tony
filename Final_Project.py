@@ -20,7 +20,11 @@ collision = False
 player_y = 250
 grid = []
 
+texture_car = arcade.load_texture("images/CPT_car.png")
+texture_line = arcade.load_texture("images/CPT_finishline.jpg")
+texture_box = arcade.load_texture("images/CPT_box.jpeg")
 
+# provide the random values to the boxes
 for _ in range(25):
     x = random.randrange(525, finish)
     y = random.randrange(0, 475)
@@ -31,33 +35,43 @@ for _ in range(25):
 
 def on_update(delta_time):
     global up_pressed, down_pressed, player_y, finish, collision
+
+    # control the player car by up and down key
     if up_pressed and player_y <= SCREEN_HEIGHT - 15:
         player_y += 5
     if down_pressed and player_y >= 15:
         player_y -= 5
+
+    # draw boxes in random places and check if it collides
     for index in range(len(box_x_position)):
         box_x_position[index] -= 5
-        if ((box_x_position[index] - 50) ** 2 + (box_y_position[index] - player_y) ** 2) <= 1000 and finish >= 50:
+        if ((box_x_position[index] - 50) ** 2 + (box_y_position[index] - player_y) ** 2) <= 1650 and finish >= 50:
             collision = True
         if box_x_position[index] < -25:
             box_x_position[index] = random.randrange(525, 1475)
             box_y_position[index] = random.randrange(0, 475)
-    finish -= 10
+    finish -= 1
 
 
 
 
 def on_draw():
-    global player_y, finish, collision
+    global player_y, finish, collision, texture_car, texture_line
     arcade.start_render()
+
+    # drawing player, finish line, and boxed
     if finish >= 50:
-        arcade.draw_rectangle_filled(finish, 250, 50, 500, arcade.color.BLACK)
-        arcade.draw_circle_filled(50, player_y, 20, arcade.color.RED)
+        arcade.draw_texture_rectangle(finish, 250, 200, 500, texture_line, 0)
+        arcade.draw_texture_rectangle(50, player_y, 80, 50, texture_car, 0)
         for x, y in zip(box_x_position, box_y_position):
-            arcade.draw_rectangle_filled(x, y, 50, 50, arcade.color.BRICK_RED)
+            arcade.draw_texture_rectangle(x, y, 35, 35, texture_box, 0)
+
+    # end the game if it collides with box
     if collision == True and finish > 50:
         arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
         arcade.draw_text("Game Over", 100, 250, arcade.color.BLACK, 40)
+
+    # end the game if it reaches the finish line
     elif collision == False and finish <= 50:
         arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
         arcade.draw_text("You Win!", 120, 250, arcade.color.BLACK, 40)
@@ -82,7 +96,7 @@ def on_key_release(key, modifiers):
 
 def setup():
     arcade.open_window(SCREEN_WIDTH, SCREEN_HEIGHT, "My Arcade Game")
-    arcade.set_background_color(arcade.color.WHITE)
+    arcade.set_background_color(arcade.color.ANTI_FLASH_WHITE)
     arcade.schedule(on_update, 1/60)
 
 
