@@ -28,6 +28,7 @@ texture_line = arcade.load_texture("images/CPT_finishline.png")
 texture_box = arcade.load_texture("images/CPT_box.jpeg")
 texture_crash = arcade.load_texture("images/CPT_crash.jpg")
 texture_win = arcade.load_texture("images/CPT_win.jpg")
+texture_trophy = arcade.load_texture("images/CPT_trophy.jpg")
 
 # provide the random values to the boxes
 for _ in range(25):
@@ -54,13 +55,13 @@ def on_update(delta_time):
 
     # draw boxes in random places and check if it collides
     for index in range(len(box_x_position)):
-        box_x_position[index] -= 5
+        box_x_position[index] -= 4
         if ((box_x_position[index] - player_x) ** 2 + (box_y_position[index] - player_y) ** 2) <= 1550 and finish >= 50:
             collision = True
         if box_x_position[index] < -25:
             box_x_position[index] = random.randrange(525, 1475)
             box_y_position[index] = random.randrange(0, 475)
-    finish -= 10
+    finish -= 1
 
 
 
@@ -86,6 +87,7 @@ def on_draw():
     elif collision == False and finish <= 50:
         arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
         arcade.draw_texture_rectangle(250, 350, 500, 400, texture_win, 0)
+        arcade.draw_texture_rectangle(250, 100, 100, 100, texture_trophy, 0)
         arcade.draw_text("You Win!", 120, 250, arcade.color.BLACK, 40)
 
 
