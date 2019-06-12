@@ -87,7 +87,7 @@ def on_draw():
     elif collision == False and finish <= 50:
         arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
         arcade.draw_texture_rectangle(250, 350, 500, 400, texture_win, 0)
-        arcade.draw_texture_rectangle(250, 100, 100, 100, texture_trophy, 0)
+        arcade.draw_texture_rectangle(250, 120, 150, 150, texture_trophy, 0)
         arcade.draw_text("You Win!", 120, 250, arcade.color.BLACK, 40)
 
 
