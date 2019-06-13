@@ -1,5 +1,17 @@
+'''
+-------------------------------------------------------------------------------
+Name:		CPT_CarGame.py
+Purpose:	This program is a car game. Player have to reach the finish line without collision with boxes.
+
+Authors:	Kim. D, Dong. T
+
+Created:	17/06/2019
+------------------------------------------------------------------------------
+'''
+
 import arcade, random
 
+# setting variables
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 500
 
@@ -23,6 +35,7 @@ player_x = 50
 player_y = 250
 grid = []
 
+# setting images
 texture_car = arcade.load_texture("images/CPT_car.png")
 texture_line = arcade.load_texture("images/CPT_finishline.png")
 texture_box = arcade.load_texture("images/CPT_box.jpeg")
@@ -48,12 +61,13 @@ def on_update(delta_time):
     if down_pressed and player_y >= 15:
         player_y -= 5
     if left_pressed and player_x >= 25:
-        player_x -= 2.75
+        player_x -= 3
     if right_pressed and player_x <= 475:
-        player_x += 3
+        player_x += 4
 
+# ---------------------------------------------------------------------------------
 
-    # draw boxes in random places and check if it collides
+    # check if the car collides with any of the boxes
     for index in range(len(box_x_position)):
         box_x_position[index] -= 4
         if ((box_x_position[index] - player_x) ** 2 + (box_y_position[index] - player_y) ** 2) <= 1550 and finish >= 50:
@@ -86,7 +100,7 @@ def on_draw():
     # end the game if it reaches the finish line
     elif collision == False and finish <= 50:
         arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
-        arcade.draw_texture_rectangle(250, 350, 500, 400, texture_win, 0)
+        arcade.draw_texture_rectangle(250, 400, 500, 300, texture_win, 0)
         arcade.draw_texture_rectangle(250, 120, 150, 150, texture_trophy, 0)
         arcade.draw_text("You Win!", 120, 250, arcade.color.BLACK, 40)
 
@@ -117,7 +131,7 @@ def on_key_release(key, modifiers):
 
 
 def setup():
-    arcade.open_window(SCREEN_WIDTH, SCREEN_HEIGHT, "My Arcade Game")
+    arcade.open_window(SCREEN_WIDTH, SCREEN_HEIGHT, "Car Racing Game")
     arcade.set_background_color(arcade.color.ANTI_FLASH_WHITE)
     arcade.schedule(on_update, 1/60)
 
