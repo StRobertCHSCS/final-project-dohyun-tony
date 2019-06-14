@@ -15,25 +15,28 @@ import arcade, random
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 500
 
+WIDTH = 1500
+HEIGHT = 100
+
 ROW_COUNT = 5
 COLUMN_COUNT = 1
 
-WIDTH = 1500
-HEIGHT = 100
 finish = 1500
 
 box = arcade.ShapeElementList()
+
 box_x_position = []
 box_y_position = []
+grid = []
 
 up_pressed = False
 down_pressed = False
 left_pressed = False
 right_pressed = False
 collision = False
+
 player_x = 50
 player_y = 250
-grid = []
 
 # setting images
 texture_car = arcade.load_texture("images/CPT_car.png")
@@ -70,11 +73,12 @@ def on_update(delta_time):
     # check if the car collides with any of the boxes
     for index in range(len(box_x_position)):
         box_x_position[index] -= 4
-        if ((box_x_position[index] - player_x) ** 2 + (box_y_position[index] - player_y) ** 2) <= 1550 and finish >= 50:
+        if ((box_x_position[index] - player_x) ** 2 + (box_y_position[index] - player_y) ** 2) <= 1500 and finish >= 50:
             collision = True
         if box_x_position[index] < -25:
             box_x_position[index] = random.randrange(525, 1475)
             box_y_position[index] = random.randrange(0, 475)
+
     finish -= 1
 
 
@@ -82,23 +86,24 @@ def on_update(delta_time):
 
 def on_draw():
     global player_x, player_y, finish, collision, texture_car, texture_line
+
     arcade.start_render()
 
     # drawing player, finish line, and boxed
-    if finish >= 50:
+    if finish >= player_x:
         arcade.draw_texture_rectangle(finish, 250, 100, 500, texture_line, 0)
         arcade.draw_texture_rectangle(player_x, player_y, 80, 50, texture_car, 0)
         for x, y in zip(box_x_position, box_y_position):
-            arcade.draw_texture_rectangle(x, y, 35, 35, texture_box, 0)
+            arcade.draw_texture_rectangle(x, y, 40, 40, texture_box, 0)
 
     # end the game if it collides with box
-    if collision == True and finish > 50:
+    if collision == True and finish > player_x:
         arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
         arcade.draw_texture_rectangle(250, 275, 500, 500, texture_crash, 0)
         arcade.draw_text("Game Over", 110, 250, arcade.color.BLACK, 35)
 
     # end the game if it reaches the finish line
-    elif collision == False and finish <= 50:
+    elif collision == False and finish <= player_x:
         arcade.draw_rectangle_filled(250, 250, 500, 500, arcade.color.WHITE)
         arcade.draw_texture_rectangle(250, 400, 500, 300, texture_win, 0)
         arcade.draw_texture_rectangle(250, 120, 150, 150, texture_trophy, 0)
@@ -108,6 +113,7 @@ def on_draw():
 
 def on_key_press(key, modifiers):
     global up_pressed, down_pressed, left_pressed, right_pressed
+
     if key == arcade.key.UP:
         up_pressed = True
     if key == arcade.key.DOWN:
@@ -120,6 +126,7 @@ def on_key_press(key, modifiers):
 
 def on_key_release(key, modifiers):
     global up_pressed, down_pressed, left_pressed, right_pressed
+
     if key == arcade.key.UP:
         up_pressed = False
     if key == arcade.key.DOWN:
@@ -132,7 +139,7 @@ def on_key_release(key, modifiers):
 
 def setup():
     arcade.open_window(SCREEN_WIDTH, SCREEN_HEIGHT, "Car Racing Game")
-    arcade.set_background_color(arcade.color.ANTI_FLASH_WHITE)
+    arcade.set_background_color(arcade.color.GAINSBORO)
     arcade.schedule(on_update, 1/60)
 
 
